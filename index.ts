@@ -1,18 +1,13 @@
-import BinaryNumber from './src/BinaryNumber'
-import CellularAutomationBinaryRule from './src/CellularAutomation/CellularAutomationBinaryRule'
-import CellularAutomationGenerator from './src/CellularAutomation/CellularAutomationGenerator'
+import Des from "./src/Des/Des";
+import CellularAutomationDes from "./src/Des/CellularAutomationDes";
 
-const b30 = BinaryNumber.fromNumber(30, 8)
-console.log(b30.asString)
-b30.shift(1)
-console.log(b30.asString)
+const des = new CellularAutomationDes()
 
-// const rule = new CellularAutomationBinaryRule(b30)
-// const generator = new CellularAutomationGenerator(rule)
+const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. '
+const key = '1110110010100001111010101000000101010100011101001010100101010111'
 
-// const key = BinaryNumber.createEmpty(48)
-// key.updateBit(1, true)
+const encoded = des.encodeText(text, key)
+const decoded = des.decodeText(encoded, key)
 
-// const state = generator.generateBinaryNumberFromKey(key)
+console.log(decoded)
 
-// console.log(state.asString)

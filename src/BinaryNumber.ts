@@ -41,6 +41,12 @@ export default class BinaryNumber {
     return new BinaryNumber(state)
   }
 
+  static concat(list: BinaryNumber[]): BinaryNumber  {
+    return BinaryNumber.fromBinaryString(
+      list.map(item => item.asString).join('')
+    )
+  }
+
   constructor(
     private readonly state: boolean[]
   ) {}
@@ -85,7 +91,38 @@ export default class BinaryNumber {
     })
   }
 
-  public shift(bitsCount): void {
+  public xor(number: BinaryNumber): BinaryNumber {
+    const state = []
+    this.state.forEach((item, idx) => {
+      const storingIndex = this.getStoringIndex(idx)
+      const numberBitValue = number.getBit(storingIndex)
+
+      state.push(item !== numberBitValue)
+    })
+    return new BinaryNumber(state)
+  }
+
+  public split(partsCount: number): BinaryNumber[] {
+    const bitsPerPart = Math.ceil(this.length / partsCount)
+    const parts: BinaryNumber[] = []
+
+    let counter = 0
+    let temp = ''
+    this.asString.split('').forEach(char => {
+      counter++
+      temp += char
+
+      if(counter === bitsPerPart) {
+        parts.push(BinaryNumber.fromBinaryString(temp))
+        counter = 0
+        temp = ''
+      }
+    })
+
+    return parts   
+  }
+
+  public shift(bitsCount: number): void {
     this.state.forEach((item, idx) => {
       this.updateBit(idx, !!this.getBit(idx + bitsCount))
     })
