@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "console": "ts-node",
-    "dev": "ts-node index.ts"
+    "dev": "node -r ts-node/register --max-old-space-size=5000 index.ts"
   },
   "dependencies": {
     "@types/node": "^12.7.5",

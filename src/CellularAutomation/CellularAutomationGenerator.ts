@@ -6,6 +6,7 @@ const KEY_LENGTH = 48
 const START_KEY_POSITION = (GENERATED_NUMBER_LENGTH - KEY_LENGTH) / 2
 
 export default class CellularAutomationGenerator {
+  private cache: Map<string, BinaryNumber> = new Map()
 
   constructor (
     private readonly rule: ICellularAutomationRule
@@ -16,13 +17,18 @@ export default class CellularAutomationGenerator {
       throw new Error('CellularAutomationGenerator: invalid key length')
     }
 
+    const cachedValue = this.cache.get(key.asString)
+    if(cachedValue) {
+      return cachedValue
+    }
+
     let state = BinaryNumber.createEmpty(GENERATED_NUMBER_LENGTH)
     state.fillStartsWith(START_KEY_POSITION, key)
 
     while(!state.isFilled) {
       state = this.getNextRowState(state)
     }
-
+    this.cache.set(key.asString, state)
     return state
   }
 

@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import DesBlock from "./DesBlock";
 import BinaryNumber from "../BinaryNumber";
 
@@ -28,18 +29,34 @@ export default class DesRunner {
     return this.getTextFromBinaryChunks(decodedChunks)
   }
 
-  public getBinaryArrays(text: string, key: string){
+  public writeBinaryArraysToFile(text: string, key: string, fileName: string){
     const binaryKey = BinaryNumber.fromBinaryString(key, KEY_LENGTH)
     const binaryChunks = this.getBinaryChunksFromText(text)
+    console.log("Start Encoding")
 
-    const encodedChunks = binaryChunks.map(chunk => this.desBlock.encode(chunk, binaryKey))
-    const result = []
-    encodedChunks.forEach(chunk => {
-      chunk.split(LETTERS_PER_CHUNK).forEach(charCode => {
-        result.push(charCode.asString.split(''))
-      })
+    let currentPercent = 0
+    console.time("t")
+    binaryChunks.forEach((chunk, idx) => {
+      const newPercent = Math.round(idx / binaryChunks.length * 100)
+      if(newPercent !== currentPercent) {
+        currentPercent = newPercent
+        console.log(newPercent + '%')
+        console.timeEnd("t")
+      }
+
+      const encoded = this.desBlock.encode(chunk, binaryKey)
+      fs.appendFileSync(fileName, encoded.asString, 'binary')
     })
-    return result
+
+    console.log("Ready")
+  }
+
+  public decodeBinaryArraysFromFile(key: string, filename: string) {
+    const binaryKey = BinaryNumber.fromBinaryString(key, KEY_LENGTH)
+    const data = fs.readFileSync(filename, 'utf8').slice(0, 64*20)
+    const chunks = BinaryNumber.fromBinaryString(data).split(20)
+    const decodedChunks = chunks.map(chunk => this.desBlock.decode(chunk, binaryKey))
+    return this.getTextFromBinaryChunks(decodedChunks)
   }
 
   private getBinaryChunksFromText(text: string): BinaryNumber[] {
@@ -59,7 +76,6 @@ export default class DesRunner {
         chunks.push(BinaryNumber.concat(
           temp.map(char => BinaryNumber.fromNumber(char.charCodeAt(0), BITS_PER_LETTER))
         ))
-
         counter = 0
         temp = [] 
       }
