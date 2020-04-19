@@ -1,0 +1,5 @@
+export const TEXT_CHUNK_LENGTH = 64
+export const BITS_PER_LETTER = 8
+export const LETTERS_PER_CHUNK = TEXT_CHUNK_LENGTH / BITS_PER_LETTER
+
+export const THREADS_COUNT = 7

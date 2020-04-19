@@ -1,19 +1,10 @@
 {
-  "name": "DES-with-Cellular-automaton",
+  "name": "DES-with-Cellular-automaton2.0",
   "version": "1.0.0",
-  "main": "index.ts",
-  "repository": "https://github.com/Shmigelskiy/DES-with-Cellular-automaton.git",
-  "author": "Shmigelskiy <shmigelskiy.roman@ukr.net>",
+  "main": "index.js",
   "license": "MIT",
-  "private": true,
+  "type": "module",
   "scripts": {
-    "console": "ts-node",
-    "dev": "node -r ts-node/register --max-old-space-size=5000 index.ts"
-  },
-  "dependencies": {
-    "@types/node": "^12.7.5",
-    "fs": "^0.0.1-security",
-    "ts-node": "^8.4.1",
-    "typescript": "^3.6.3"
+    "dev": "node index.js"
   }
 }
