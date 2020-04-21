@@ -110,7 +110,7 @@ export function f(prevR, roundKey, getSBoxValue) {
       keyMixedValue[base + 3] + 
       keyMixedValue[base + 4]
     )
-    sBoxesResult += getSBoxValue(sBoxIdx, rowDefinition, colDefinition, roundKey)
+    sBoxesResult += getSBoxValue(sBoxIdx, rowDefinition, colDefinition, roundKey, keyMixedValue)
   }
 
   return permute(sBoxesResult, PERMUTATION)
